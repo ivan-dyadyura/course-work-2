@@ -27,22 +27,15 @@
     <div class="card card-w70">
       <div class="loader" v-if="loading && !contentModel.length"></div>
       <template v-else>
-        <template v-if="contentModel.length">
-          <component
-              v-for="item in contentModel"
-              :is="item.type"
-              :value="item.value"
-              :key="item.id"
-              @remove="removeElement(item.id)"
+          <app-render-content
+              :content="contentModel"
+              @remove="removeElement"
           >
-          </component>
-        </template>
-        <p v-else>
-          Нет созданных элементов, вы можете сделать это на панели слева.
-        </p>
+          </app-render-content>
       </template>
-
     </div>
+
+
   </div>
   <div class="container">
     <p>
@@ -66,11 +59,8 @@
 
 
 <script>
-import AppHeader from '@/components/AppHeader'
-import AppAvatar from "@/components/AppAvatar"
-import AppSubtitle from "@/components/AppSubtitle"
 import AppAlert from "@/components/AppAlert"
-import AppText from "@/components/AppText"
+import AppRenderContent from "@/components/AppRenderContent";
 
 export default {
   data() {
@@ -155,12 +145,13 @@ export default {
           title: 'Успешно',
           text: `${type} был удален`
         }
+        console.log(this.contentModel)
         this.isSending = false
         this.loading = false
       } catch (e) {
         this.alert = {
           type: 'danger',
-          title: 'Пользователь не удален по неизвестной причине',
+          title: 'Элемент не удален по неизвестной причине',
           text: e.message
         }
       }
@@ -190,8 +181,7 @@ export default {
     }
   },
   components: {
-    AppHeader, AppAvatar, AppSubtitle,
-    AppText, AppAlert
+    AppAlert, AppRenderContent
   }
 }
 </script>
